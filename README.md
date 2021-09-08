@@ -3,11 +3,11 @@ A lightweight React Native international currency formatter. iOS/Android/Expo co
 
 
 ## Installation
-```
+```sh
 yarn add react-native-format-currency
 ```
 OR
-```
+```sh
 npm install --save react-native-format-currency
 ```
 
@@ -208,8 +208,18 @@ const styles = StyleSheet.create({
 ```
 
 ## Props
+| Prop | Type | Default | Note |
+|---|---|---|---|
+| `amount` | `Number` | null | currency amount
+| `code` | `String` | null | 3-letter ISO 4217 Currency Code
 
-## Contributing
-Feel free to submit a PR if you'd like to contribute!
+
+## Test
+```sh
+npm run test
+```
+
+## Contribute
+Feel free to submit a PR if you'd like to help!
 
 
