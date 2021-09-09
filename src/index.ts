@@ -142,3 +142,55 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
   // @ts-ignore
   return switchOptions[code] || switchOptions.DEFAULT;
 };
+
+type CurrencyCode = {
+  code: string;
+  name: string;
+};
+export const getSupportedCurrencies = () => {
+  const currencyCodes: CurrencyCode[] = [
+    { code: "ARS", name: "Argentina Peso" },
+    { code: "AUD", name: "Australia Dollar" },
+    { code: "BGN", name: "Bulgaria Lev" },
+    { code: "BRL", name: "Brazil Real" },
+    { code: "CAD", name: "Canada Dollar" },
+    { code: "CHF", name: "Switzerland Franc" },
+    { code: "CLP", name: "Chile Peso" },
+    { code: "CNY", name: "China Yuan Renminbi" },
+    { code: "COP", name: "Colombia Peso" },
+    { code: "CZK", name: "Czech Republic Koruna" },
+    { code: "DKK", name: "Denmark Krone" },
+    { code: "EUR", name: "Euro Member Countries" },
+    { code: "GBP", name: "United Kingdom Pound" },
+    { code: "HKD", name: "Hong Kong Dollar" },
+    { code: "HRK", name: "Croatia Kuna" },
+    { code: "HUF", name: "Hungary Forint" },
+    { code: "IDR", name: "Indonesia Rupiah" },
+    { code: "ILS", name: "Israel Shekel" },
+    { code: "INR", name: "India Rupee" },
+    { code: "ISK", name: "Iceland Krona" },
+    { code: "JPY", name: "Japan Yen" },
+    { code: "KRW", name: "Korea (South) Won" },
+    { code: "MAD", name: "Morocco Dirham" },
+    { code: "MXN", name: "Mexico Peso" },
+    { code: "MYR", name: "Malaysia Ringgit" },
+    { code: "NOK", name: "Norway Krone" },
+    { code: "NZD", name: "New Zealand Dollar" },
+    { code: "PHP", name: "Philippines Peso" },
+    { code: "PLN", name: "Poland Zloty" },
+    { code: "RON", name: "Romania Leu" },
+    { code: "RUB", name: "Russia Ruble" },
+    { code: "SAR", name: "Saudi Arabia Riyal" },
+    { code: "SEK", name: "Sweden Krona" },
+    { code: "SGD", name: "Singapore Dollar" },
+    { code: "THB", name: "Thailand Baht" },
+    { code: "TRY", name: "Turkey Lira" },
+    { code: "TWD", name: "Taiwan New Dollar" },
+    { code: "USD", name: "United States Dollar" },
+    { code: "VND", name: "Viet Nam Dong" },
+    { code: "ZAR", name: "South Africa Rand" },
+    { code: "DEFAULT", name: "Default" },
+  ];
+
+  return currencyCodes;
+};
