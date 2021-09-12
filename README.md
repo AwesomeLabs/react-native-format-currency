@@ -1,17 +1,66 @@
 # react-native-format-currency
-A lightweight React Native international currency formatter. iOS/Android/Expo compatible.
+> A lightweight international currency formatter for React Native & Expo (iOS and Android). Check out the [example app](example/) for a working demo.
 
 
 ## Installation
 ```sh
-yarn add react-native-format-currency
+$ yarn add react-native-format-currency
 ```
-OR
+or
 ```sh
-npm install --save react-native-format-currency
+$ npm install react-native-format-currency
 ```
 
 ## Usage
+
+### formatCurrency({ amount: _number_, code: _string_})
+
+```sh
+formatCurrency({ amount: 1234.56, code: "ARS" })
+```
+Formats a currency amount to specified currency code:
+```js
+const [valueFormattedWithSymbol, valueFormattedWithoutSymbol, symbol] = formatCurrency({ amount: 1234.56, code: "ARS" })
+```
+Returns:
+```js
+["$ 1.234,56", "1.234,56", "$"]
+```
+
+#### Props
+
+| Prop | Type | Default | Note |
+|---|---|---|---|
+| `amount` | `Number` | null | currency amount
+| `code` | `String` | null | 3-letter [ISO 4217 Currency Code](https://en.wikipedia.org/wiki/ISO_4217)
+
+### getSupportedCurrencies()
+```
+getSupportedCurrencies()
+```
+Returns an array of currencies:
+
+```js
+[
+  { code: "ARS", name: "Argentina Peso" },
+  { code: "AUD", name: "Australia Dollar" },
+  { code: "BGN", name: "Bulgaria Lev" },
+  { code: "BRL", name: "Brazil Real" },
+  { code: "CAD", name: "Canada Dollar" },
+  { code: "CHF", name: "Switzerland Franc" },
+  { code: "CLP", name: "Chile Peso" },
+  { code: "CNY", name: "China Yuan Renminbi" },
+  { code: "COP", name: "Colombia Peso" },
+  { code: "CZK", name: "Czech Republic Koruna" },
+  { code: "DKK", name: "Denmark Krone" },
+  { code: "EUR", name: "Euro Member Countries" },
+  { code: "GBP", name: "United Kingdom Pound" },
+  { code: "HKD", name: "Hong Kong Dollar" },
+    ...
+]
+```
+
+## Example
 
 ```js
 import { StatusBar } from "expo-status-bar";
@@ -207,16 +256,11 @@ const styles = StyleSheet.create({
 
 ```
 
-## Props
-| Prop | Type | Default | Note |
-|---|---|---|---|
-| `amount` | `Number` | null | currency amount
-| `code` | `String` | null | 3-letter ISO 4217 Currency Code
 
-
-## Test
+## Testing
 ```sh
-npm run test
+yarn build
+yarn test
 ```
 
 ## Contribute

@@ -1,7 +1,7 @@
 {
   "name": "react-native-format-currency",
   "version": "0.0.1",
-  "description": "A lightweight international currency formatter for React Native / Expo",
+  "description": "A lightweight international currency formatter for React Native & Expo (iOS and Android).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,13 +12,15 @@
     "type": "git",
     "url": "git+https://github.com/AwesomeLabs/react-native-format-currency.git"
   },
-  "author": "Awesome Labs, LLC",
+  "author": "Awesome Labs (https://isjustawesome.com)",
   "license": "ISC",
   "keywords": [
     "react-native",
+    "react native",
+    "reactnative",
+    "expo",
     "ios",
     "android",
-    "expo",
     "currency",
     "formatter"
   ],
