@@ -7,9 +7,11 @@ type FormatCurrencyFunction = ({
 }) => [string, number, string];
 
 export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
-  const fixedAmount = amount.toFixed(2);
-  const commaFormatted = fixedAmount.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  const periodFormatted = fixedAmount
+  const commaFormatted = String(amount).replace(
+    /(\d)(?=(\d{3})+(?!\d))/g,
+    "$1,"
+  );
+  const periodFormatted = String(amount)
     .replace(".", ",")
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
