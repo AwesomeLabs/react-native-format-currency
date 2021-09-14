@@ -1,6 +1,11 @@
 # react-native-format-currency
-> A lightweight international currency formatter for React Native & Expo (iOS and Android). Check out the [example app](example/) for a working demo.
 
+[![version](https://img.shields.io/npm/v/react-native-format-currency.svg)](https://www.npmjs.com/package/react-native-format-currency)
+[![npm](https://img.shields.io/npm/dm/react-native-format-currency.svg)](https://www.npmjs.com/package/react-native-format-currency)
+[![twitter](https://img.shields.io/twitter/follow/AwesomeLabsLLC.svg?style=flat-square&label=Follow%20%40AwesomeLabsLLC&logo=TWITTER&logoColor=FFFFFF&labelColor=00aced&logoWidth=15&color=lightgray)](https://twitter.com/intent/follow?screen_name=AwesomeLabsLLC)
+
+
+A lightweight international currency formatter for React Native & Expo (iOS and Android). Check out the [example app](example/) for a working demo.
 
 ## Installation
 ```sh
@@ -13,7 +18,14 @@ $ npm install react-native-format-currency
 
 ## Usage
 
-### formatCurrency({ amount: _number_, code: _string_})
+Import library with 
+```js
+import { formatCurrency, getSupportedCurrencies } from "react-native-format-currency";
+```
+
+## Methods
+
+### `formatCurrency({ amount: _number_, code: _string_})`
 
 ```sh
 formatCurrency({ amount: 1234.56, code: "ARS" })
@@ -22,19 +34,24 @@ Formats a currency amount to specified currency code:
 ```js
 const [valueFormattedWithSymbol, valueFormattedWithoutSymbol, symbol] = formatCurrency({ amount: 1234.56, code: "ARS" })
 ```
-Returns:
-```js
-["$ 1.234,56", "1.234,56", "$"]
-```
 
-#### Props
+__Props__
 
 | Prop | Type | Default | Note |
 |---|---|---|---|
 | `amount` | `Number` | null | currency amount
 | `code` | `String` | null | 3-letter [ISO 4217 Currency Code](https://en.wikipedia.org/wiki/ISO_4217)
 
-### getSupportedCurrencies()
+__Returns:__
+
+Array containing formatted currency string, formatted currency (without symbol), and currency symbol
+
+```js
+["$ 1.234,56", "1.234,56", "$"]
+```
+
+
+### `getSupportedCurrencies()`
 ```
 getSupportedCurrencies()
 ```
