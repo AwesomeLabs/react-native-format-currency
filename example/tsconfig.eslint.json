@@ -1,0 +1,7 @@
+// Allows linting of files not included by default in tsconfig.
+// https://stackoverflow.com/a/68686975/25197
+
+{
+    "include": [".eslintrc.js"]
+  }
+  

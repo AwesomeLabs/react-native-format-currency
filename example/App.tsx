@@ -13,7 +13,47 @@ import {
   getSupportedCurrencies,
 } from "react-native-format-currency";
 
-export default function App() {
+const bgColorPrimary = "#fff";
+const bgColorSecondary = "#eee";
+const fgColorPrimary = "#000";
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "flex-start",
+    backgroundColor: bgColorPrimary,
+    flex: 1,
+  },
+  currencyRow: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  currencyRowText: {
+    alignContent: "flex-start",
+    color: fgColorPrimary,
+    fontSize: 16,
+  },
+  input: {
+    backgroundColor: bgColorSecondary,
+    fontSize: 30,
+    fontWeight: "bold",
+    height: 38,
+  },
+  inputContainer: {
+    alignSelf: "stretch",
+    flex: 1,
+    marginBottom: 15,
+    marginTop: 10,
+  },
+  scrollView: {
+    marginBottom: 40,
+    marginTop: 40,
+    paddingHorizontal: 5,
+    width: "100%",
+  },
+});
+
+const App = () => {
   const [inputValue, setInputValue] = useState("1234.56");
 
   const currencyCodes = getSupportedCurrencies();
@@ -51,43 +91,8 @@ export default function App() {
         renderItem={renderItem}
         keyExtractor={(code) => code.code}
       />
-      <StatusBar style="auto" />
+      <StatusBar />
     </SafeAreaView>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "flex-start",
-  },
-  inputContainer: {
-    flex: 1,
-    alignSelf: "stretch",
-    marginTop: 10,
-    marginBottom: 15,
-  },
-  input: {
-    backgroundColor: "#eee",
-    height: 38,
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  scrollView: {
-    width: "100%",
-    paddingHorizontal: 5,
-    marginTop: 40,
-    marginBottom: 40,
-  },
-  currencyRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  currencyRowText: {
-    alignContent: "flex-start",
-    color: "#000",
-    fontSize: 16,
-  },
-});
+};
+export default App;

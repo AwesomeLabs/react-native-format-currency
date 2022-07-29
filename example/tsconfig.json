@@ -1,8 +1,16 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": true,
     "baseUrl": ".",
-    "skipLibCheck": true
-  },
-  "extends": "expo/tsconfig.base"
+    "module": "esnext",
+    "noErrorTruncation": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "paths": {
+      "~/*": ["./*"]
+    }
+  }
 }
