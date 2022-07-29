@@ -12,7 +12,6 @@
   "dependencies": {
     "expo": "^45.0.0",
     "expo-status-bar": "~1.3.0",
-    "prettier": "^2.7.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
@@ -28,10 +27,8 @@
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
