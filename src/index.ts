@@ -4,7 +4,7 @@ type FormatCurrencyFunction = ({
 }: {
   amount: number;
   code: string;
-}) => [string, number, string];
+}) => [string, string, string];
 
 export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
   const commaFormatted = String(amount).replace(
