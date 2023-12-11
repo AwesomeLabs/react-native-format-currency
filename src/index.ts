@@ -25,7 +25,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // barbadian Dollar (ex: $1.234,56)
     BBD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
 
-    // Bolivian Boliviano (ex: $b 1.234,56)
+    // bolivian Boliviano (ex: $b 1.234,56)
     BOB: [`$b ${commaFormatted}`, `${commaFormatted}`, "$b"],
 
     // bulgarian lev (ex: лв1,234.56)
@@ -34,8 +34,8 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // brazilian real (ex: R$ 1.234,56)
     BRL: [`R$ ${periodFormatted}`, `${periodFormatted}`, "R$"],
 
-    // Bahamian Dollar (ex: $1,234,56)
-    BSD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
+    // bahamian Dollar (ex: $1,234,56)
+    BSD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
 
     // canadian dollar (ex: $ 1,234.56)
     CAD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
@@ -52,7 +52,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // colombian peso (ex: $ 1,234.56)
     COP: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
-    // Costa Rican Colón (ex: ₡1.234,56)
+    // costa rican colón (ex: ₡1.234,56)
     CRC: [`₡${periodFormatted}`, `${periodFormatted}`, "₡"],
 
     // czech koruna (ex: 1.234,56 Kč)
@@ -61,7 +61,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // danish krone (ex: kr. 1.234,56)
     DKK: [`kr. ${periodFormatted}`, `${periodFormatted}`, "kr."],
 
-    // Dominican Peso (ex: RD$ 1,234.56)
+    // dominican Peso (ex: RD$ 1,234.56)
     DOP: [`RD$ ${commaFormatted}`, `${commaFormatted}`, "RD$"],
 
     // european union (ex: €1.234,56)
@@ -70,7 +70,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // uk/great britain pound sterling (ex: £1,234.56)
     GBP: [`£${commaFormatted}`, `${commaFormatted}`, "£"],
 
-    // Guatemalan Quetzal (ex: Q1,234.56)
+    // guatemalan quetzal (ex: Q1,234.56)
     GTQ: [`Q${commaFormatted}`, `${commaFormatted}`, "Q"],
 
     // hong kong dollar (ex: HK$ 1,234.56)
@@ -136,8 +136,8 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // polish zloty (ex: 1.234,56 zł)
     PLN: [`${periodFormatted} zł`, `${periodFormatted}`, "zł"],
 
-    // paraguayan Guaraní (ex: ₲ 1,234.56)
-    PYG: [`₲ ${commaFormatted}`, `${commaFormatted}`, "₲"],
+    // paraguayan Guaraní (ex: ₲1,234.56)
+    PYG: [`₲${commaFormatted}`, `${commaFormatted}`, "₲"],
 
     // romanian new leu (ex: 1,234.56L)
     RON: [`${commaFormatted}L`, `${commaFormatted}`, "L"],
@@ -172,8 +172,8 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // vietnamese dong (ex: 1.234,56 ₫)
     VND: [`${periodFormatted} ₫`, `${periodFormatted}`, "₫"],
 
-    // uruguayan Peso (ex: $U 1.234.56)
-    UYU: [`$U ${periodFormatted}`, `${periodFormatted}`, "$U"],
+    // uruguayan Peso (ex: $U1.234.56)
+    UYU: [`$U${periodFormatted}`, `${periodFormatted}`, "$U"],
 
     // south african rand (ex: R 1,234.56)
     ZAR: [`R ${commaFormatted}`, `${commaFormatted}`, "R"],
