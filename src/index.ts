@@ -22,11 +22,20 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // australian dollar (ex: $ 1,234.56)
     AUD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
+    // barbadian Dollar (ex: $1.234,56)
+    BBD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
+
+    // Bolivian Boliviano (ex: $b 1.234,56)
+    BOB: [`$b ${commaFormatted}`, `${commaFormatted}`, "$b"],
+
     // bulgarian lev (ex: лв1,234.56)
     BGN: [`лв${commaFormatted}`, `${commaFormatted}`, "лв"],
 
     // brazilian real (ex: R$ 1.234,56)
     BRL: [`R$ ${periodFormatted}`, `${periodFormatted}`, "R$"],
+
+    // Bahamian Dollar (ex: $1,234,56)
+    BSD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
     // canadian dollar (ex: $ 1,234.56)
     CAD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
@@ -43,11 +52,17 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // colombian peso (ex: $ 1,234.56)
     COP: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
+    // Costa Rican Colón (ex: ₡1.234,56)
+    CRC: [`₡${periodFormatted}`, `${periodFormatted}`, "₡"],
+
     // czech koruna (ex: 1.234,56 Kč)
     CZK: [`${periodFormatted} Kč`, `${periodFormatted}`, "Kč"],
 
     // danish krone (ex: kr. 1.234,56)
     DKK: [`kr. ${periodFormatted}`, `${periodFormatted}`, "kr."],
+
+    // Dominican Peso (ex: RD$ 1,234.56)
+    DOP: [`RD$ ${commaFormatted}`, `${commaFormatted}`, "RD$"],
 
     // european union (ex: €1.234,56)
     EUR: [`€${periodFormatted}`, `${periodFormatted}`, "€"],
@@ -55,8 +70,14 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // uk/great britain pound sterling (ex: £1,234.56)
     GBP: [`£${commaFormatted}`, `${commaFormatted}`, "£"],
 
+    // Guatemalan Quetzal (ex: Q1,234.56)
+    GTQ: [`Q${commaFormatted}`, `${commaFormatted}`, "Q"],
+
     // hong kong dollar (ex: HK$ 1,234.56)
     HKD: [`HK$ ${commaFormatted}`, `${commaFormatted}`, "HK$"],
+
+    // honduran lempira (ex: L 1,234.56)
+    HNL: [`L ${commaFormatted}`, `${commaFormatted}`, "L"],
 
     // croatian kuna (ex: 1,234.56 kn)
     HRK: [`${commaFormatted} kn`, `${commaFormatted}`, "kn"],
@@ -76,6 +97,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // icelandic krona (ex: kr. 1.234,56)
     ISK: [`kr. ${periodFormatted}`, `${periodFormatted}`, "kr."],
 
+    // jamaican dollar (ex: J$ 1,234.56)
+    JMD: [`J$ ${commaFormatted}`, `${commaFormatted}`, "J$"],
+
     // yen (ex: ¥ 1,234.56)
     JPY: [`¥ ${commaFormatted}`, `${commaFormatted}`, "¥"],
 
@@ -91,17 +115,29 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // malaysian ringgit (ex: RM 1,234.56)
     MYR: [`RM ${commaFormatted}`, `${commaFormatted}`, "RM"],
 
+    // nicaraguan Córdoba (ex: C$ 1,234.56)
+    NIO: [`C$ ${commaFormatted}`, `${commaFormatted}`, "C$"],
+
     // norwegian krone (ex: kr 1,234.56)
     NOK: [`kr ${commaFormatted}`, `${commaFormatted}`, "kr"],
 
     // new zealand dollar (ex: $ 1,234.56)
     NZD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
+    // panamanian balboa (ex: B/. 1,234.56)
+    PAB: [`B/. ${commaFormatted}`, `${commaFormatted}`, "B/."],
+
+    // peruvian Nuevo Sol (ex: S/. 1,234.56)
+    PEN: [`S/. ${commaFormatted}`, `${commaFormatted}`, "S/."],
+
     // philippine peso (ex: ₱ 1,234.56)
     PHP: [`₱ ${commaFormatted}`, `${commaFormatted}`, "₱"],
 
     // polish zloty (ex: 1.234,56 zł)
     PLN: [`${periodFormatted} zł`, `${periodFormatted}`, "zł"],
+
+    // paraguayan Guaraní (ex: ₲ 1,234.56)
+    PYG: [`₲ ${commaFormatted}`, `${commaFormatted}`, "₲"],
 
     // romanian new leu (ex: 1,234.56L)
     RON: [`${commaFormatted}L`, `${commaFormatted}`, "L"],
@@ -118,6 +154,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // singapore dollar (ex: $1,234.56)
     SGD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
 
+    // salvadoran Colón(ex: ₡1,234.56)
+    SVC: [`₡${commaFormatted}`, `${commaFormatted}`, "₡"],
+
     // thai baht (ex: 1,234.56 ฿)
     THB: [`${commaFormatted} ฿`, `${commaFormatted}`, "฿"],
 
@@ -132,6 +171,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
 
     // vietnamese dong (ex: 1.234,56 ₫)
     VND: [`${periodFormatted} ₫`, `${periodFormatted}`, "₫"],
+
+    // uruguayan Peso (ex: $U 1.234.56)
+    UYU: [`$U ${periodFormatted}`, `${periodFormatted}`, "$U"],
 
     // south african rand (ex: R 1,234.56)
     ZAR: [`R ${commaFormatted}`, `${commaFormatted}`, "R"],
@@ -162,16 +204,16 @@ export const getSupportedCurrencies = () => {
     // { code: "AWG", name: "Aruba Guilder"},
     // { code: "AZN", name: "Azerbaijan Manat"},
     // { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark"},
-    // { code: "BBD", name: "Barbados Dollar"},
+    { code: "BBD", name: "Barbados Dollar"},
     // { code: "BDT", name: "Bangladesh Taka"},
     { code: "BGN", name: "Bulgaria Lev" },
     // { code: "BHD", name: "Bahrain Dinar" },
     // { code: "BIF", name: "Burundi Franc" },
     // { code: "BMD", name: "Bermuda Dollar" },
     // { code: "BND", name: "Brunei Darussalam Dollar" },
-    // { code: "BOB", name: "Bolivia Bolíviano" },
+    { code: "BOB", name: "Bolivia Bolíviano" },
     { code: "BRL", name: "Brazil Real" },
-    // { code: "BSD", name: "Bahamas Dollar" },
+    { code: "BSD", name: "Bahamas Dollar" },
     // { code: "BTN", name: "Bhutan Ngultrum" },
     // { code: "BWP", name: "Botswana Pula" },
     // { code: "BYN", name: "Belarus Ruble" },
@@ -182,14 +224,14 @@ export const getSupportedCurrencies = () => {
     { code: "CLP", name: "Chile Peso" },
     { code: "CNY", name: "China Yuan Renminbi" },
     { code: "COP", name: "Colombia Peso" },
-    // { code: "CRC", name: "Costa Rica Colon" },
+    { code: "CRC", name: "Costa Rica Colón" },
     // { code: "CUC", name: "Cuba Convertible Peso" },
     // { code: "CUP", name: "Cuba Peso" },
     // { code: "CVE", name: "Cape Verde Escudo" },
     { code: "CZK", name: "Czech Republic Koruna" },
     // { code: "DJF", name: "Djibouti Franc" },
     { code: "DKK", name: "Denmark Krone" },
-    // { code: "DOP", name: "Dominican Republic Peso" },
+    { code: "DOP", name: "Dominican Republic Peso" },
     // { code: "DZD", name: "Algeria Dinar" },
     // { code: "EGP", name: "Egypt Pound" },
     // { code: "ERN", name: "Eritrea Nakfa" },
@@ -204,10 +246,9 @@ export const getSupportedCurrencies = () => {
     // { code: "GIP", name: "Gibraltar Pound" },
     // { code: "GMD", name: "Gambia Dalasi" },
     // { code: "GNF", name: "Guinea Franc" },
-    // { code: "GTQ", name: "Guatemala Quetzal" },
-    // { code: "GTQ", name: "Guyana Dollar" },
+    { code: "GTQ", name: "Guatemala Quetzal" },
     { code: "HKD", name: "Hong Kong Dollar" },
-    // { code: "HNL", name: "Honduras Lempira" },
+    { code: "HNL", name: "Honduras Lempira" },
     { code: "HRK", name: "Croatia Kuna" },
     // { code: "HTG", name: "Haiti Gourde" },
     { code: "HUF", name: "Hungary Forint" },
@@ -219,7 +260,7 @@ export const getSupportedCurrencies = () => {
     // { code: "IRR", name: "Iran Rial" },
     { code: "ISK", name: "Iceland Krona" },
     // { code: "JEP", name: "Jersey Pound" },
-    // { code: "JMD", name: "Jamaica Dollar" },
+    { code: "JMD", name: "Jamaica Dollar" },
     // { code: "JOD", name: "Jordan Dinar" },
     { code: "JPY", name: "Japan Yen" },
     // { code: "KES", name: "Kenya Shilling" },
@@ -253,18 +294,18 @@ export const getSupportedCurrencies = () => {
     // { code: "MZN", name: "Mozambique Metical" },
     // { code: "NAD", name: "Namibia Dollar" },
     // { code: "NGN", name: "Nigeria Naira" },
-    // { code: "NIO", name: "Nicaragua Cordoba" },
+    { code: "NIO", name: "Nicaragua Córdoba" },
     { code: "NOK", name: "Norway Krone" },
     // { code: "NPR", name: "Nepal Rupee" },
     { code: "NZD", name: "New Zealand Dollar" },
     // { code: "OMR", name: "Oman Rial" },
-    // { code: "PAB", name: "Panama Balboa" },
-    // { code: "PEN", name: "Peru Sol" },
+    { code: "PAB", name: "Panama Balboa" },
+    { code: "PEN", name: "Peruvian Nuevo Sol" },
     // { code: "PGK", name: "Papua New Guinea Kina" },
     { code: "PHP", name: "Philippines Peso" },
     // { code: "PKR", name: "Pakistan Rupee" },
     { code: "PLN", name: "Poland Zloty" },
-    // { code: "PYG", name: "Paraguay Guarani" },
+    { code: "PYG", name: "Paraguay Guarani" },
     // { code: "QAR", name: "Qatar Riyal" },
     { code: "RON", name: "Romania Leu" },
     // { code: "RSD", name: "Serbia Dinar" },
@@ -282,7 +323,7 @@ export const getSupportedCurrencies = () => {
     // { code: "SPL", name: "Seborga Luigino" },
     // { code: "SRD", name: "Suriname Dollar" },
     // { code: "STN", name: "São Tomé and Príncipe Dobra" },
-    // { code: "SVC", name: "El Salvador Colon" },
+    { code: "SVC", name: "El Salvador Colon" },
     // { code: "SYP", name: "Syria Pound" },
     // { code: "SZL", name: "eSwatini Lilangeni" },
     { code: "THB", name: "Thailand Baht" },
@@ -298,7 +339,7 @@ export const getSupportedCurrencies = () => {
     // { code: "UAH", name: "Ukraine Hryvnia" },
     // { code: "UGX", name: "Uganda Shilling" },
     { code: "USD", name: "United States Dollar" },
-    // { code: "UYU", name: "Uruguay Peso" },
+    { code: "UYU", name: "Uruguay Peso" },
     // { code: "UZS", name: "Uzbekistan Som" },
     // { code: "VEF", name: "Venezuela Bolívar" },
     { code: "VND", name: "Viet Nam Dong" },
