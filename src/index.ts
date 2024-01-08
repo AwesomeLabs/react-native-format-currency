@@ -204,7 +204,7 @@ export const getSupportedCurrencies = () => {
     // { code: "AWG", name: "Aruba Guilder"},
     // { code: "AZN", name: "Azerbaijan Manat"},
     // { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark"},
-    { code: "BBD", name: "Barbados Dollar"},
+    { code: "BBD", name: "Barbados Dollar" },
     // { code: "BDT", name: "Bangladesh Taka"},
     { code: "BGN", name: "Bulgaria Lev" },
     // { code: "BHD", name: "Bahrain Dinar" },
