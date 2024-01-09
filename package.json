@@ -1,6 +1,6 @@
 {
   "name": "react-native-format-currency",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A lightweight international currency formatter for React Native & Expo (iOS and Android).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
