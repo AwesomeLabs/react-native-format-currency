@@ -2,6 +2,15 @@
 var expect = require("chai").expect;
 var index = require("../dist/index.js");
 describe("formatCurrency function test", () => {
+  it("should return AED", () => {
+    var result = index.formatCurrency({ amount: 0.56, code: "AED" });
+    expect(result).to.eql(["AED 0.56", "0.56", "AED"]);
+    var result = index.formatCurrency({ amount: 1234.56, code: "AED" });
+    expect(result).to.eql(["AED 1,234.56", "1,234.56", "AED"]);
+    var result = index.formatCurrency({ amount: 1234567.89, code: "AED" });
+    expect(result).to.eql(["AED 1,234,567.89", "1,234,567.89", "AED"]);
+  });
+
   it("should return ARS", () => {
     var result = index.formatCurrency({ amount: 0.56, code: "ARS" });
     expect(result).to.eql(["$ 0,56", "0,56", "$"]);
@@ -18,6 +27,15 @@ describe("formatCurrency function test", () => {
     expect(result).to.eql(["$ 1,234.56", "1,234.56", "$"]);
     var result = index.formatCurrency({ amount: 1234567.89, code: "AUD" });
     expect(result).to.eql(["$ 1,234,567.89", "1,234,567.89", "$"]);
+  });
+
+  it("should return BAM", () => {
+    var result = index.formatCurrency({ amount: 0.56, code: "BAM" });
+    expect(result).to.eql(["KM 0.56", "0.56", "KM"]);
+    var result = index.formatCurrency({ amount: 1234.56, code: "BAM" });
+    expect(result).to.eql(["KM 1,234.56", "1,234.56", "KM"]);
+    var result = index.formatCurrency({ amount: 1234567.89, code: "BAM" });
+    expect(result).to.eql(["KM 1,234,567.89", "1,234,567.89", "KM"]);
   });
 
   it("should return BBD", () => {
@@ -281,6 +299,15 @@ describe("formatCurrency function test", () => {
     expect(result).to.eql(["1,234,567.89 .د.م.", "1,234,567.89", ".د.م."]);
   });
 
+  it("should return MDL", () => {
+    var result = index.formatCurrency({ amount: 0.56, code: "MDL" });
+    expect(result).to.eql(["0.56 L", "0.56", "L"]);
+    var result = index.formatCurrency({ amount: 1234.56, code: "MDL" });
+    expect(result).to.eql(["1,234.56 L", "1,234.56", "L"]);
+    var result = index.formatCurrency({ amount: 1234567.89, code: "MDL" });
+    expect(result).to.eql(["1,234,567.89 L", "1,234,567.89", "L"]);
+  });
+
   it("should return MXN", () => {
     var result = index.formatCurrency({ amount: 0.56, code: "MXN" });
     expect(result).to.eql(["$ 0.56", "0.56", "$"]);
@@ -297,6 +324,15 @@ describe("formatCurrency function test", () => {
     expect(result).to.eql(["RM 1,234.56", "1,234.56", "RM"]);
     var result = index.formatCurrency({ amount: 1234567.89, code: "MYR" });
     expect(result).to.eql(["RM 1,234,567.89", "1,234,567.89", "RM"]);
+  });
+
+  it("should return NGN", () => {
+    var result = index.formatCurrency({ amount: 0.56, code: "NGN" });
+    expect(result).to.eql(["₦0.56", "0.56", "₦"]);
+    var result = index.formatCurrency({ amount: 1234.56, code: "NGN" });
+    expect(result).to.eql(["₦1,234.56", "1,234.56", "₦"]);
+    var result = index.formatCurrency({ amount: 1234567.89, code: "NGN" });
+    expect(result).to.eql(["₦1,234,567.89", "1,234,567.89", "₦"]);
   });
 
   it("should return NIO", () => {
@@ -378,6 +414,15 @@ describe("formatCurrency function test", () => {
     expect(result).to.eql(["1,234.56L", "1,234.56", "L"]);
     var result = index.formatCurrency({ amount: 1234567.89, code: "RON" });
     expect(result).to.eql(["1,234,567.89L", "1,234,567.89", "L"]);
+  });
+
+  it("should return RSD", () => {
+    var result = index.formatCurrency({ amount: 0.56, code: "RSD" });
+    expect(result).to.eql(["0.56RSD", "0.56", "RSD"]);
+    var result = index.formatCurrency({ amount: 1234.56, code: "RSD" });
+    expect(result).to.eql(["1,234.56RSD", "1,234.56", "RSD"]);
+    var result = index.formatCurrency({ amount: 1234567.89, code: "RSD" });
+    expect(result).to.eql(["1,234,567.89RSD", "1,234,567.89", "RSD"]);
   });
 
   it("should return RUB", () => {

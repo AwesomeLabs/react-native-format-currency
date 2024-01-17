@@ -17,7 +17,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
 
   const switchOptions = {
     // united arab emirates dirham (ex: AED 1,234.56)
-    AED: [`AED${commaFormatted}`, `${commaFormatted}`, "AED"],
+    AED: [`AED ${commaFormatted}`, `${commaFormatted}`, "AED"],
 
     // argentine peso (ex: $ 1.234,56)
     ARS: [`$ ${periodFormatted}`, `${periodFormatted}`, "$"],
@@ -125,7 +125,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     MYR: [`RM ${commaFormatted}`, `${commaFormatted}`, "RM"],
 
     // nigerian naira (ex: ₦1,234.56)
-    NGN: [`	₦${commaFormatted}`, `${commaFormatted}`, "₦"],
+    NGN: [`₦${commaFormatted}`, `${commaFormatted}`, "₦"],
 
     // nicaraguan Córdoba (ex: C$ 1,234.56)
     NIO: [`C$ ${commaFormatted}`, `${commaFormatted}`, "C$"],
@@ -208,7 +208,7 @@ type CurrencyCode = {
 };
 export const getSupportedCurrencies = () => {
   const currencyCodes: CurrencyCode[] = [
-    { code: "AED", name: "United Arab Emirates Dirham"},
+    { code: "AED", name: "United Arab Emirates Dirham" },
     // { code: "AFN", name: "Afghanistan Afghani"},
     // { code: "ALL", name: "Albania Lek"},
     // { code: "AMD", name: "Armenia Dram"},
@@ -218,7 +218,7 @@ export const getSupportedCurrencies = () => {
     { code: "AUD", name: "Australia Dollar" },
     // { code: "AWG", name: "Aruba Guilder"},
     // { code: "AZN", name: "Azerbaijan Manat"},
-    { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark"},
+    { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark" },
     { code: "BBD", name: "Barbados Dollar" },
     // { code: "BDT", name: "Bangladesh Taka"},
     { code: "BGN", name: "Bulgaria Lev" },
