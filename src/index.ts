@@ -16,11 +16,17 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
   const switchOptions = {
+    // united arab emirates dirham (ex: AED 1,234.56)
+    AED: [`AED ${commaFormatted}`, `${commaFormatted}`, "AED"],
+
     // argentine peso (ex: $ 1.234,56)
     ARS: [`$ ${periodFormatted}`, `${periodFormatted}`, "$"],
 
     // australian dollar (ex: $ 1,234.56)
     AUD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
+
+    // bosnia and herzegovina convertible mark (ex: KM 1.234,56)
+    BAM: [`KM ${commaFormatted}`, `${commaFormatted}`, "KM"],
 
     // barbadian Dollar (ex: $1.234,56)
     BBD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
@@ -109,11 +115,17 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // moroccan dirham (ex: 1,234.56 .د.م.)
     MAD: [`${commaFormatted} .د.م.`, `${commaFormatted}`, ".د.م."],
 
+    // moldovan leu (ex: 1.234,56 L)
+    MDL: [`${commaFormatted} L`, `${commaFormatted}`, "L"],
+
     // mexican peso (ex: $ 1,234.56)
     MXN: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
 
     // malaysian ringgit (ex: RM 1,234.56)
     MYR: [`RM ${commaFormatted}`, `${commaFormatted}`, "RM"],
+
+    // nigerian naira (ex: ₦1,234.56)
+    NGN: [`₦${commaFormatted}`, `${commaFormatted}`, "₦"],
 
     // nicaraguan Córdoba (ex: C$ 1,234.56)
     NIO: [`C$ ${commaFormatted}`, `${commaFormatted}`, "C$"],
@@ -141,6 +153,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
 
     // romanian new leu (ex: 1,234.56L)
     RON: [`${commaFormatted}L`, `${commaFormatted}`, "L"],
+
+    // serbian dinar (ex: 1,234.56 RSD)
+    RSD: [`${commaFormatted}RSD`, `${commaFormatted}`, "RSD"],
 
     // russian ruble (ex: 1.234,56 p.)
     RUB: [`${periodFormatted} p.`, `${periodFormatted}`, "p."],
@@ -193,7 +208,7 @@ type CurrencyCode = {
 };
 export const getSupportedCurrencies = () => {
   const currencyCodes: CurrencyCode[] = [
-    // { code: "AED", name: "United Arab Emirates Dirham"},
+    { code: "AED", name: "United Arab Emirates Dirham" },
     // { code: "AFN", name: "Afghanistan Afghani"},
     // { code: "ALL", name: "Albania Lek"},
     // { code: "AMD", name: "Armenia Dram"},
@@ -203,7 +218,7 @@ export const getSupportedCurrencies = () => {
     { code: "AUD", name: "Australia Dollar" },
     // { code: "AWG", name: "Aruba Guilder"},
     // { code: "AZN", name: "Azerbaijan Manat"},
-    // { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark"},
+    { code: "BAM", name: "Bosnia and Herzegovina Convertible Mark" },
     { code: "BBD", name: "Barbados Dollar" },
     // { code: "BDT", name: "Bangladesh Taka"},
     { code: "BGN", name: "Bulgaria Lev" },
@@ -279,7 +294,7 @@ export const getSupportedCurrencies = () => {
     // { code: "LSL", name: "Lesotho Loti" },
     // { code: "LYD", name: "Libya Dinar" },
     { code: "MAD", name: "Morocco Dirham" },
-    // { code: "MDL", name: "Moldova Leu" },
+    { code: "MDL", name: "Moldova Leu" },
     // { code: "MGA", name: "Madagascar Ariary" },
     // { code: "MKD", name: "Macedonia Denar" },
     // { code: "MMK", name: "Myanmar (Burma) Kyat" },
@@ -293,7 +308,7 @@ export const getSupportedCurrencies = () => {
     { code: "MYR", name: "Malaysia Ringgit" },
     // { code: "MZN", name: "Mozambique Metical" },
     // { code: "NAD", name: "Namibia Dollar" },
-    // { code: "NGN", name: "Nigeria Naira" },
+    { code: "NGN", name: "Nigeria Naira" },
     { code: "NIO", name: "Nicaragua Córdoba" },
     { code: "NOK", name: "Norway Krone" },
     // { code: "NPR", name: "Nepal Rupee" },
@@ -308,7 +323,7 @@ export const getSupportedCurrencies = () => {
     { code: "PYG", name: "Paraguay Guarani" },
     // { code: "QAR", name: "Qatar Riyal" },
     { code: "RON", name: "Romania Leu" },
-    // { code: "RSD", name: "Serbia Dinar" },
+    { code: "RSD", name: "Serbia Dinar" },
     { code: "RUB", name: "Russia Ruble" },
     // { code: "RWF", name: "Rwanda Franc" },
     { code: "SAR", name: "Saudi Arabia Riyal" },
