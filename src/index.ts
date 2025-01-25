@@ -15,7 +15,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     .replace(".", ",")
     .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
-  const switchOptions = {
+  const switchOptions: Record<string, [string, string,string]> = {
     // united arab emirates dirham (ex: AED 1,234.56)
     AED: [`AED ${commaFormatted}`, `${commaFormatted}`, "AED"],
 
@@ -197,8 +197,6 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     DEFAULT: [amount.toString(), amount.toString(), ""],
   };
 
-  // TODO: fix typescript error!
-  // @ts-ignore
   return switchOptions[code] || switchOptions.DEFAULT;
 };
 
