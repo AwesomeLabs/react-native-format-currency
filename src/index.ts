@@ -193,6 +193,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // south african rand (ex: R 1,234.56)
     ZAR: [`R ${commaFormatted}`, `${commaFormatted}`, "R"],
 
+    // georgian lari (ex: 1.234,56 ₾)
+    GEL: [`${periodFormatted} ₾`, `${periodFormatted}`, "₾"],
+
     // default
     DEFAULT: [amount.toString(), amount.toString(), ""],
   };
@@ -253,7 +256,7 @@ export const getSupportedCurrencies = () => {
     // { code: "FJD", name: "Fiji Dollar" },
     // { code: "FKP", name: "Falkland Islands (Malvinas) Pound" },
     { code: "GBP", name: "United Kingdom Pound" },
-    // { code: "GEL", name: "Georgia Lari" },
+    { code: "GEL", name: "Georgia Lari" },
     // { code: "GGP", name: "Guernsey Pound" },
     // { code: "GHS", name: "Ghana Cedi" },
     // { code: "GIP", name: "Gibraltar Pound" },
