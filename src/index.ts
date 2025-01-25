@@ -76,6 +76,9 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // uk/great britain pound sterling (ex: £1,234.56)
     GBP: [`£${commaFormatted}`, `${commaFormatted}`, "£"],
 
+    // georgian lari (ex: 1,234.56 ₾)
+    GEL: [`${commaFormatted} ₾`, `${commaFormatted}`, "₾"],
+
     // guatemalan quetzal (ex: Q1,234.56)
     GTQ: [`Q${commaFormatted}`, `${commaFormatted}`, "Q"],
 
@@ -253,7 +256,7 @@ export const getSupportedCurrencies = () => {
     // { code: "FJD", name: "Fiji Dollar" },
     // { code: "FKP", name: "Falkland Islands (Malvinas) Pound" },
     { code: "GBP", name: "United Kingdom Pound" },
-    // { code: "GEL", name: "Georgia Lari" },
+    { code: "GEL", name: "Georgia Lari" },
     // { code: "GGP", name: "Guernsey Pound" },
     // { code: "GHS", name: "Ghana Cedi" },
     // { code: "GIP", name: "Gibraltar Pound" },
