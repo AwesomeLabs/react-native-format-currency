@@ -77,7 +77,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     GBP: [`£${commaFormatted}`, `${commaFormatted}`, "£"],
 
     // georgian lari (ex: 1,234.56 ₾)
-    GEL: [`${commaFormatted} ₾`, `${commaFormatted}`, "₾"],
+    GEL: [`${periodFormatted} ₾`, `${periodFormatted}`, "₾"],
 
     // guatemalan quetzal (ex: Q1,234.56)
     GTQ: [`Q${commaFormatted}`, `${commaFormatted}`, "Q"],
