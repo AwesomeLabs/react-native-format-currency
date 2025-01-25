@@ -193,8 +193,8 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     // south african rand (ex: R 1,234.56)
     ZAR: [`R ${commaFormatted}`, `${commaFormatted}`, "R"],
 
-    // georgian lari (ex: 1.234,56 ₾)
-    GEL: [`${periodFormatted} ₾`, `${periodFormatted}`, "₾"],
+    // georgian lari (ex: ₾1.234,56)
+    GEL: [`₾${periodFormatted}`, `${periodFormatted}`, "₾"],
 
     // default
     DEFAULT: [amount.toString(), amount.toString(), ""],
