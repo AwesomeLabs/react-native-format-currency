@@ -98,7 +98,7 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     IDR: [`Rp ${commaFormatted}`, `${commaFormatted}`, "Rp"],
 
     // new israeli shekel (ex: ₪ 1.234,56)
-    ILS: [`₪ ${periodFormatted}`, `${periodFormatted}`, "₪"],
+    ILS: [`₪ ${commaFormatted}`, `${commaFormatted}`, "₪"],
 
     // indian rupee (ex: ₹ 1,234.56)
     INR: [`₹ ${commaFormatted}`, `${commaFormatted}`, "₹"],
