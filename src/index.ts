@@ -6,198 +6,99 @@ type FormatCurrencyFunction = ({
   code: string;
 }) => [string, string, string];
 
+type CurrencyConfig = {
+  symbol: string;
+  format: "comma" | "period";
+  position: "before" | "after";
+  space: boolean;
+};
+
+const CURRENCY_CONFIG: Record<string, CurrencyConfig> = {
+  AED: { symbol: "AED", format: "comma", position: "before", space: true },
+  ARS: { symbol: "$", format: "period", position: "before", space: true },
+  AUD: { symbol: "$", format: "comma", position: "before", space: true },
+  BAM: { symbol: "KM", format: "comma", position: "before", space: true },
+  BBD: { symbol: "$", format: "comma", position: "before", space: false },
+  BOB: { symbol: "$b", format: "comma", position: "before", space: true },
+  BGN: { symbol: "лв", format: "comma", position: "before", space: false },
+  BRL: { symbol: "R$", format: "period", position: "before", space: true },
+  BSD: { symbol: "$", format: "comma", position: "before", space: false },
+  CAD: { symbol: "$", format: "comma", position: "before", space: true },
+  CHF: { symbol: "fr.", format: "period", position: "before", space: true },
+  CLP: { symbol: "$", format: "comma", position: "before", space: true },
+  CNY: { symbol: "¥", format: "comma", position: "before", space: true },
+  COP: { symbol: "$", format: "comma", position: "before", space: true },
+  CRC: { symbol: "₡", format: "period", position: "before", space: false },
+  CZK: { symbol: "Kč", format: "period", position: "after", space: true },
+  DKK: { symbol: "kr.", format: "period", position: "before", space: true },
+  DOP: { symbol: "RD$", format: "comma", position: "before", space: true },
+  EUR: { symbol: "€", format: "period", position: "before", space: false },
+  GBP: { symbol: "£", format: "comma", position: "before", space: false },
+  GTQ: { symbol: "Q", format: "comma", position: "before", space: false },
+  HKD: { symbol: "HK$", format: "comma", position: "before", space: true },
+  HNL: { symbol: "L", format: "comma", position: "before", space: true },
+  HRK: { symbol: "kn", format: "comma", position: "after", space: true },
+  HUF: { symbol: "Ft", format: "period", position: "after", space: true },
+  IDR: { symbol: "Rp", format: "comma", position: "before", space: true },
+  ILS: { symbol: "₪", format: "period", position: "before", space: true },
+  INR: { symbol: "₹", format: "comma", position: "before", space: true },
+  ISK: { symbol: "kr.", format: "period", position: "before", space: true },
+  JMD: { symbol: "J$", format: "comma", position: "before", space: true },
+  JPY: { symbol: "¥", format: "comma", position: "before", space: true },
+  KRW: { symbol: "₩", format: "comma", position: "before", space: true },
+  MAD: { symbol: ".د.م.", format: "comma", position: "after", space: true },
+  MDL: { symbol: "L", format: "comma", position: "after", space: true },
+  MXN: { symbol: "$", format: "comma", position: "before", space: true },
+  MYR: { symbol: "RM", format: "comma", position: "before", space: true },
+  NGN: { symbol: "₦", format: "comma", position: "before", space: false },
+  NIO: { symbol: "C$", format: "comma", position: "before", space: true },
+  NOK: { symbol: "kr", format: "comma", position: "before", space: true },
+  NZD: { symbol: "$", format: "comma", position: "before", space: true },
+  PAB: { symbol: "B/.", format: "comma", position: "before", space: true },
+  PEN: { symbol: "S/.", format: "comma", position: "before", space: true },
+  PHP: { symbol: "₱", format: "comma", position: "before", space: true },
+  PLN: { symbol: "zł", format: "period", position: "after", space: true },
+  PYG: { symbol: "₲", format: "comma", position: "before", space: false },
+  RON: { symbol: "L", format: "comma", position: "after", space: false },
+  RSD: { symbol: "RSD", format: "comma", position: "after", space: false },
+  RUB: { symbol: "p.", format: "period", position: "after", space: true },
+  SAR: { symbol: "﷼", format: "comma", position: "after", space: true },
+  SEK: { symbol: "kr", format: "period", position: "after", space: true },
+  SGD: { symbol: "$", format: "comma", position: "before", space: false },
+  SVC: { symbol: "₡", format: "comma", position: "before", space: false },
+  THB: { symbol: "฿", format: "comma", position: "after", space: true },
+  TRY: { symbol: "₺", format: "comma", position: "after", space: true },
+  TWD: { symbol: "元", format: "comma", position: "before", space: true },
+  USD: { symbol: "$", format: "comma", position: "before", space: false },
+  VND: { symbol: "₫", format: "period", position: "after", space: true },
+  UYU: { symbol: "$U", format: "period", position: "before", space: false },
+  ZAR: { symbol: "R", format: "comma", position: "before", space: true },
+};
+
 export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
-  const commaFormatted = String(amount).replace(
-    /(\d)(?=(\d{3})+(?!\d))/g,
-    "$1,"
-  );
-  const periodFormatted = String(amount)
-    .replace(".", ",")
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  const config = CURRENCY_CONFIG[code];
 
-  const switchOptions: Record<string, [string, string, string]> = {
-    // united arab emirates dirham (ex: AED 1,234.56)
-    AED: [`AED ${commaFormatted}`, `${commaFormatted}`, "AED"],
+  if (!config) {
+    const str = amount.toString();
+    return [str, str, ""];
+  }
 
-    // argentine peso (ex: $ 1.234,56)
-    ARS: [`$ ${periodFormatted}`, `${periodFormatted}`, "$"],
+  const { symbol, format, position, space } = config;
 
-    // australian dollar (ex: $ 1,234.56)
-    AUD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
+  const formatted =
+    format === "comma"
+      ? String(amount).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      : String(amount)
+          .replace(".", ",")
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
-    // bosnia and herzegovina convertible mark (ex: KM 1.234,56)
-    BAM: [`KM ${commaFormatted}`, `${commaFormatted}`, "KM"],
+  const separator = space ? " " : "";
+  const withSymbol =
+    position === "before"
+      ? `${symbol}${separator}${formatted}`
+      : `${formatted}${separator}${symbol}`;
 
-    // barbadian Dollar (ex: $1.234,56)
-    BBD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // bolivian Boliviano (ex: $b 1.234,56)
-    BOB: [`$b ${commaFormatted}`, `${commaFormatted}`, "$b"],
-
-    // bulgarian lev (ex: лв1,234.56)
-    BGN: [`лв${commaFormatted}`, `${commaFormatted}`, "лв"],
-
-    // brazilian real (ex: R$ 1.234,56)
-    BRL: [`R$ ${periodFormatted}`, `${periodFormatted}`, "R$"],
-
-    // bahamian Dollar (ex: $1,234,56)
-    BSD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // canadian dollar (ex: $ 1,234.56)
-    CAD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // swiss franc (ex: fr. 1.234,56)
-    CHF: [`fr. ${periodFormatted}`, `${periodFormatted}`, "fr."],
-
-    // chilean peso (ex: $ 1,234.56)
-    CLP: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // yuan renminbi (ex: ¥ 1,234.56)
-    CNY: [`¥ ${commaFormatted}`, `${commaFormatted}`, "¥"],
-
-    // colombian peso (ex: $ 1,234.56)
-    COP: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // costa rican colón (ex: ₡1.234,56)
-    CRC: [`₡${periodFormatted}`, `${periodFormatted}`, "₡"],
-
-    // czech koruna (ex: 1.234,56 Kč)
-    CZK: [`${periodFormatted} Kč`, `${periodFormatted}`, "Kč"],
-
-    // danish krone (ex: kr. 1.234,56)
-    DKK: [`kr. ${periodFormatted}`, `${periodFormatted}`, "kr."],
-
-    // dominican Peso (ex: RD$ 1,234.56)
-    DOP: [`RD$ ${commaFormatted}`, `${commaFormatted}`, "RD$"],
-
-    // european union (ex: €1.234,56)
-    EUR: [`€${periodFormatted}`, `${periodFormatted}`, "€"],
-
-    // uk/great britain pound sterling (ex: £1,234.56)
-    GBP: [`£${commaFormatted}`, `${commaFormatted}`, "£"],
-
-    // guatemalan quetzal (ex: Q1,234.56)
-    GTQ: [`Q${commaFormatted}`, `${commaFormatted}`, "Q"],
-
-    // hong kong dollar (ex: HK$ 1,234.56)
-    HKD: [`HK$ ${commaFormatted}`, `${commaFormatted}`, "HK$"],
-
-    // honduran lempira (ex: L 1,234.56)
-    HNL: [`L ${commaFormatted}`, `${commaFormatted}`, "L"],
-
-    // croatian kuna (ex: 1,234.56 kn)
-    HRK: [`${commaFormatted} kn`, `${commaFormatted}`, "kn"],
-
-    // hungarian forint (ex: 1.234,56 Ft)
-    HUF: [`${periodFormatted} Ft`, `${periodFormatted}`, "Ft"],
-
-    // indonesian rupiah (ex: Rp 1,234.56)
-    IDR: [`Rp ${commaFormatted}`, `${commaFormatted}`, "Rp"],
-
-    // new israeli shekel (ex: ₪ 1.234,56)
-    ILS: [`₪ ${periodFormatted}`, `${periodFormatted}`, "₪"],
-
-    // indian rupee (ex: ₹ 1,234.56)
-    INR: [`₹ ${commaFormatted}`, `${commaFormatted}`, "₹"],
-
-    // icelandic krona (ex: kr. 1.234,56)
-    ISK: [`kr. ${periodFormatted}`, `${periodFormatted}`, "kr."],
-
-    // jamaican dollar (ex: J$ 1,234.56)
-    JMD: [`J$ ${commaFormatted}`, `${commaFormatted}`, "J$"],
-
-    // yen (ex: ¥ 1,234.56)
-    JPY: [`¥ ${commaFormatted}`, `${commaFormatted}`, "¥"],
-
-    // won (ex: ₩ 1,234.56)
-    KRW: [`₩ ${commaFormatted}`, `${commaFormatted}`, "₩"],
-
-    // moroccan dirham (ex: 1,234.56 .د.م.)
-    MAD: [`${commaFormatted} .د.م.`, `${commaFormatted}`, ".د.م."],
-
-    // moldovan leu (ex: 1.234,56 L)
-    MDL: [`${commaFormatted} L`, `${commaFormatted}`, "L"],
-
-    // mexican peso (ex: $ 1,234.56)
-    MXN: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // malaysian ringgit (ex: RM 1,234.56)
-    MYR: [`RM ${commaFormatted}`, `${commaFormatted}`, "RM"],
-
-    // nigerian naira (ex: ₦1,234.56)
-    NGN: [`₦${commaFormatted}`, `${commaFormatted}`, "₦"],
-
-    // nicaraguan Córdoba (ex: C$ 1,234.56)
-    NIO: [`C$ ${commaFormatted}`, `${commaFormatted}`, "C$"],
-
-    // norwegian krone (ex: kr 1,234.56)
-    NOK: [`kr ${commaFormatted}`, `${commaFormatted}`, "kr"],
-
-    // new zealand dollar (ex: $ 1,234.56)
-    NZD: [`$ ${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // panamanian balboa (ex: B/. 1,234.56)
-    PAB: [`B/. ${commaFormatted}`, `${commaFormatted}`, "B/."],
-
-    // peruvian Nuevo Sol (ex: S/. 1,234.56)
-    PEN: [`S/. ${commaFormatted}`, `${commaFormatted}`, "S/."],
-
-    // philippine peso (ex: ₱ 1,234.56)
-    PHP: [`₱ ${commaFormatted}`, `${commaFormatted}`, "₱"],
-
-    // polish zloty (ex: 1.234,56 zł)
-    PLN: [`${periodFormatted} zł`, `${periodFormatted}`, "zł"],
-
-    // paraguayan Guaraní (ex: ₲1,234.56)
-    PYG: [`₲${commaFormatted}`, `${commaFormatted}`, "₲"],
-
-    // romanian new leu (ex: 1,234.56L)
-    RON: [`${commaFormatted}L`, `${commaFormatted}`, "L"],
-
-    // serbian dinar (ex: 1,234.56 RSD)
-    RSD: [`${commaFormatted}RSD`, `${commaFormatted}`, "RSD"],
-
-    // russian ruble (ex: 1.234,56 p.)
-    RUB: [`${periodFormatted} p.`, `${periodFormatted}`, "p."],
-
-    // saudi riyal (ex: 1,234.56 ﷼)
-    SAR: [`${commaFormatted} ﷼`, `${commaFormatted}`, "﷼"],
-
-    // swedish krona (ex: 1.234,56 kr)
-    SEK: [`${periodFormatted} kr`, `${periodFormatted}`, "kr"],
-
-    // singapore dollar (ex: $1,234.56)
-    SGD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // salvadoran Colón(ex: ₡1,234.56)
-    SVC: [`₡${commaFormatted}`, `${commaFormatted}`, "₡"],
-
-    // thai baht (ex: 1,234.56 ฿)
-    THB: [`${commaFormatted} ฿`, `${commaFormatted}`, "฿"],
-
-    // turkish lira (ex: 1,234.56 ₺)
-    TRY: [`${commaFormatted} ₺`, `${commaFormatted}`, "₺"],
-
-    // new taiwan dollar (ex: 元 1,234.56)
-    TWD: [`元 ${commaFormatted}`, `${commaFormatted}`, "元"],
-
-    // us dollar (ex: $1,234.56)
-    USD: [`$${commaFormatted}`, `${commaFormatted}`, "$"],
-
-    // vietnamese dong (ex: 1.234,56 ₫)
-    VND: [`${periodFormatted} ₫`, `${periodFormatted}`, "₫"],
-
-    // uruguayan Peso (ex: $U1.234.56)
-    UYU: [`$U${periodFormatted}`, `${periodFormatted}`, "$U"],
-
-    // south african rand (ex: R 1,234.56)
-    ZAR: [`R ${commaFormatted}`, `${commaFormatted}`, "R"],
-
-    // default
-    DEFAULT: [amount.toString(), amount.toString(), ""],
-  };
-
-  return switchOptions[code] || switchOptions.DEFAULT;
+  return [withSymbol, formatted, symbol];
 };
 
 type CurrencyCode = {
