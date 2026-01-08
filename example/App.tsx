@@ -32,6 +32,12 @@ const styles = StyleSheet.create({
     color: fgColorPrimary,
     fontSize: 16,
   },
+  currencyName: {
+    color: fgColorPrimary,
+    fontSize: 11,
+    fontWeight: "bold",
+    textAlign: "left",
+  },
   input: {
     backgroundColor: bgColorSecondary,
     fontSize: 30,
@@ -65,7 +71,7 @@ const App = () => {
   const currencyCodes = getSupportedCurrencies();
 
   const renderItem = ({ item, index }) => {
-    const [valueFormattedWithSymbol, , symbol] = formatCurrency({
+    const [valueFormattedWithSymbol, valueFormatted] = formatCurrency({
       amount: Number(inputValue),
       code: item.code,
     });
@@ -76,11 +82,18 @@ const App = () => {
       <View
         style={[styles.currencyRow, isAlternate && styles.currencyRowAlternate]}
       >
-        <Text style={styles.currencyRowText}>
-          {item.code} {symbol}
-        </Text>
-        <Text style={styles.currencyRowText}>{item.name}</Text>
-        <Text style={styles.currencyRowText}>{valueFormattedWithSymbol}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.currencyName}>{item.name}</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.currencyRowText}>{item.code}</Text>
+            <Text style={styles.currencyRowText}>{valueFormatted}</Text>
+            <Text style={styles.currencyRowText}>
+              {valueFormattedWithSymbol}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   };

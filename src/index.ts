@@ -12,6 +12,7 @@ type CurrencyConfig = {
   format: "comma" | "period";
   position: "before" | "after";
   space: boolean;
+  decimals?: number;
 };
 
 const CURRENCIES: Record<string, CurrencyConfig> = {
@@ -127,13 +128,14 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
     position: "before",
     space: false,
   },
-  // bahrain dinar (ex: .د.ب 1,234.56)
+  // bahrain dinar (ex: .د.ب 1,234.567) - 3 decimal places per ISO 4217
   BHD: {
     name: "Bahrain Dinar",
     symbol: ".د.ب",
     format: "comma",
     position: "before",
     space: true,
+    decimals: 3,
   },
   // burundi franc (ex: FBu 1,234.56)
   BIF: {
@@ -544,13 +546,14 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
     position: "before",
     space: true,
   },
-  // japan yen (ex: ¥ 1,234.56)
+  // japan yen (ex: ¥ 1,235) - 0 decimal places per ISO 4217
   JPY: {
     name: "Japan Yen",
     symbol: "¥",
     format: "comma",
     position: "before",
     space: true,
+    decimals: 0,
   },
   // kenya shilling (ex: KSh 1,234.56)
   KES: {
@@ -592,21 +595,23 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
     position: "before",
     space: true,
   },
-  // korea (south) won (ex: ₩ 1,234.56)
+  // korea (south) won (ex: ₩ 1,235) - 0 decimal places per ISO 4217
   KRW: {
     name: "Korea (South) Won",
     symbol: "₩",
     format: "comma",
     position: "before",
     space: true,
+    decimals: 0,
   },
-  // kuwait dinar (ex: د.ك 1,234.56)
+  // kuwait dinar (ex: د.ك 1,234.567) - 3 decimal places per ISO 4217
   KWD: {
     name: "Kuwait Dinar",
     symbol: "د.ك",
     format: "comma",
     position: "before",
     space: true,
+    decimals: 3,
   },
   // cayman islands dollar (ex: CI$ 1,234.56)
   KYD: {
@@ -832,13 +837,14 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
     position: "before",
     space: true,
   },
-  // oman rial (ex: 1,234.56 ر.ع.)
+  // oman rial (ex: 1,234.567 ر.ع.) - 3 decimal places per ISO 4217
   OMR: {
     name: "Oman Rial",
     symbol: "ر.ع.",
     format: "comma",
     position: "after",
     space: true,
+    decimals: 3,
   },
   // panama balboa (ex: B/. 1,234.56)
   PAB: {
@@ -1268,6 +1274,29 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
   // ZWD - Zimbabwe Dollar (old): OBSOLETE, replaced by ZWL
 };
 
+const formatNumber = (
+  num: number,
+  format: "comma" | "period",
+  decimals: number,
+): string => {
+  if (!Number.isFinite(num)) {
+    return String(num);
+  }
+  const str = String(num);
+  const [intStr, decStr = ""] = str.split(".");
+  const thousandsSep = format === "comma" ? "," : ".";
+  const decimalSep = format === "comma" ? "." : ",";
+  const formattedInt = intStr.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSep);
+
+  if (decimals === 0) {
+    return formattedInt;
+  }
+
+  const decPart =
+    decStr.length < decimals ? decStr.padEnd(decimals, "0") : decStr;
+  return `${formattedInt}${decimalSep}${decPart}`;
+};
+
 export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
   const config = CURRENCIES[code];
 
@@ -1276,16 +1305,11 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
     return [str, str, ""];
   }
 
-  const { symbol, format, position, space } = config;
+  const { symbol, format, position, space, decimals = 2 } = config;
   const isNegative = amount < 0;
   const absAmount = Math.abs(amount);
 
-  const formatted =
-    format === "comma"
-      ? String(absAmount).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-      : String(absAmount)
-          .replace(".", ",")
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  const formatted = formatNumber(absAmount, format, decimals);
 
   const separator = space ? " " : "";
   const withSymbol =
