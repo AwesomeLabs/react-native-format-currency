@@ -44,28 +44,35 @@ const [withSymbol, withoutSymbol, symbol] = formatCurrency({
 
 ## API
 
-### `formatCurrency({ amount, code })`
+### `formatCurrency({ amount, code, returnType? })`
 
 Formats a numeric amount for a given ISO 4217 currency code.
 
 - **Params**
   - `amount: number`: the numeric amount (negative supported)
   - `code: string`: ISO 4217 currency code (e.g. `"USD"`, `"EUR"`, `"JPY"`)
+  - `returnType?: "array" | "object"`: optional return format (default: `"array"`)
 - **Returns**
-  - `[formattedWithSymbol, formattedWithoutSymbol, symbol]`
+  - Array (default): `[formattedWithSymbol, formattedWithoutSymbol, symbol]`
+  - Object: `{ formatted, value, symbol }`
 
 ```ts
 import { formatCurrency } from "react-native-format-currency";
 
+// Array format (default)
 formatCurrency({ amount: 1234.56, code: "ARS" });
 // ["$ 1.234,56", "1.234,56", "$"]
 
 formatCurrency({ amount: -99.99, code: "GBP" });
 // ["-£99.99", "-99.99", "£"]
+
+// Object format
+formatCurrency({ amount: 1234.56, code: "USD", returnType: "object" });
+// { formatted: "$1,234.56", value: "1,234.56", symbol: "$" }
 ```
 
 **Notes**
-- Formatting is based on this package’s internal currency rules (symbol, separators, symbol position, decimals). It does **not** take a locale argument.
+- Formatting is based on this package's internal currency rules (symbol, separators, symbol position, decimals). It does **not** take a locale argument.
 - For floating-point sensitive values, consider passing integers (e.g. cents) and dividing/rounding prior to formatting.
 
 ### `getSupportedCurrencies()`
@@ -93,12 +100,14 @@ clearFormatCache();
 ### Currency data and types
 
 ```ts
-import type { CurrencyCode, CurrencyConfig, FormatResult, SupportedCurrency } from "react-native-format-currency";
+import type { CurrencyCode, CurrencyConfig, FormatResult, FormatResultObject, SupportedCurrency } from "react-native-format-currency";
 import { CURRENCIES } from "react-native-format-currency";
 ```
 
 - `CURRENCIES`: full currency config map (symbols, separators, etc.)
 - `CurrencyCode`: union of supported ISO currency codes
+- `FormatResult`: array return type `[string, string, string]`
+- `FormatResultObject`: object return type `{ formatted, value, symbol }`
 
 ## Example app
 

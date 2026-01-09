@@ -1,4 +1,8 @@
-import type { FormatResult, SupportedCurrency } from "./types";
+import type {
+  FormatResult,
+  FormatResultObject,
+  SupportedCurrency,
+} from "./types";
 import { CURRENCIES, type CurrencyCode } from "./currencies";
 
 // Memoization cache for formatCurrency results
@@ -70,12 +74,18 @@ const formatNumber = (
  * @param options - Formatting options
  * @param options.amount - The numeric amount to format (supports negative values)
  * @param options.code - ISO 4217 currency code (e.g., 'USD', 'EUR', 'JPY')
- * @returns Tuple of [formattedWithSymbol, formattedWithoutSymbol, symbol]
+ * @param options.returnType - Optional: 'array' (default) or 'object'
+ * @returns Tuple of [formattedWithSymbol, formattedWithoutSymbol, symbol] or object with formatted, value, symbol
  *
  * @example
- * // Basic usage
+ * // Basic usage (returns array)
  * formatCurrency({ amount: 1234.56, code: 'USD' });
  * // Returns: ['$1,234.56', '1,234.56', '$']
+ *
+ * @example
+ * // Object return type
+ * formatCurrency({ amount: 1234.56, code: 'USD', returnType: 'object' });
+ * // Returns: { formatted: '$1,234.56', value: '1,234.56', symbol: '$' }
  *
  * @example
  * // European format (period for thousands, comma for decimals)
@@ -97,18 +107,42 @@ const formatNumber = (
  * formatCurrency({ amount: 100, code: 'XXX' });
  * // Returns: ['100', '100', '']
  */
-export const formatCurrency = ({
+export function formatCurrency(options: {
+  amount: number;
+  code: CurrencyCode | string;
+}): FormatResult;
+export function formatCurrency(options: {
+  amount: number;
+  code: CurrencyCode | string;
+  returnType: "array";
+}): FormatResult;
+export function formatCurrency(options: {
+  amount: number;
+  code: CurrencyCode | string;
+  returnType: "object";
+}): FormatResultObject;
+export function formatCurrency({
   amount,
   code,
+  returnType,
 }: {
   amount: number;
   code: CurrencyCode | string;
-}): FormatResult => {
+  returnType?: "array" | "object";
+}): FormatResult | FormatResultObject {
+  // Helper to convert array result to object if requested
+  const toResult = (arr: FormatResult): FormatResult | FormatResultObject => {
+    if (returnType === "object") {
+      return { formatted: arr[0], value: arr[1], symbol: arr[2] };
+    }
+    return arr;
+  };
+
   // Check cache first
   const cacheKey = getCacheKey(amount, code);
   const cached = cache.get(cacheKey);
   if (cached) {
-    return cached;
+    return toResult(cached);
   }
 
   const config = CURRENCIES[code as CurrencyCode];
@@ -124,7 +158,7 @@ export const formatCurrency = ({
       }
     }
     cache.set(cacheKey, result);
-    return result;
+    return toResult(result);
   }
 
   const { symbol, format, position, space } = config;
@@ -158,8 +192,8 @@ export const formatCurrency = ({
   }
   cache.set(cacheKey, result);
 
-  return result;
-};
+  return toResult(result);
+}
 
 /**
  * Returns a list of all supported currencies.

@@ -1,5 +1,10 @@
 // Types
-export type { CurrencyConfig, FormatResult, SupportedCurrency } from "./types";
+export type {
+  CurrencyConfig,
+  FormatResult,
+  FormatResultObject,
+  SupportedCurrency,
+} from "./types";
 
 // Currency data and codes
 export { CURRENCIES, type CurrencyCode } from "./currencies";

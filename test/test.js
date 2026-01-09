@@ -1387,3 +1387,122 @@ describe("getSupportedCurrencies", () => {
     expect(codes).to.not.include("VEF"); // Obsolete Venezuela Bolivar
   });
 });
+
+describe("formatCurrency returnType option", () => {
+  beforeEach(() => {
+    index.clearFormatCache();
+  });
+
+  it("should return array by default (backward compatible)", () => {
+    const result = index.formatCurrency({ amount: 1234.56, code: "USD" });
+    expect(result).to.be.an("array");
+    expect(result).to.eql(["$1,234.56", "1,234.56", "$"]);
+  });
+
+  it("should return array when returnType is 'array'", () => {
+    const result = index.formatCurrency({
+      amount: 1234.56,
+      code: "USD",
+      returnType: "array",
+    });
+    expect(result).to.be.an("array");
+    expect(result).to.eql(["$1,234.56", "1,234.56", "$"]);
+  });
+
+  it("should return object when returnType is 'object'", () => {
+    const result = index.formatCurrency({
+      amount: 1234.56,
+      code: "USD",
+      returnType: "object",
+    });
+    expect(result).to.be.an("object");
+    expect(result).to.not.be.an("array");
+    expect(result).to.eql({
+      formatted: "$1,234.56",
+      value: "1,234.56",
+      symbol: "$",
+    });
+  });
+
+  it("should return object with EUR formatting", () => {
+    const result = index.formatCurrency({
+      amount: 1234.56,
+      code: "EUR",
+      returnType: "object",
+    });
+    expect(result).to.eql({
+      formatted: "€1.234,56",
+      value: "1.234,56",
+      symbol: "€",
+    });
+  });
+
+  it("should return object for zero-decimal currencies", () => {
+    const result = index.formatCurrency({
+      amount: 1234.56,
+      code: "JPY",
+      returnType: "object",
+    });
+    expect(result).to.eql({
+      formatted: "¥ 1,234",
+      value: "1,234",
+      symbol: "¥",
+    });
+  });
+
+  it("should return object for negative amounts", () => {
+    const result = index.formatCurrency({
+      amount: -99.99,
+      code: "GBP",
+      returnType: "object",
+    });
+    expect(result).to.eql({
+      formatted: "-£99.99",
+      value: "-99.99",
+      symbol: "£",
+    });
+  });
+
+  it("should return object for unknown currency codes", () => {
+    const result = index.formatCurrency({
+      amount: 1234.56,
+      code: "XXX",
+      returnType: "object",
+    });
+    expect(result).to.eql({
+      formatted: "1234.56",
+      value: "1234.56",
+      symbol: "",
+    });
+  });
+
+  it("should work with cached results", () => {
+    // First call - caches result
+    index.formatCurrency({ amount: 100, code: "USD" });
+
+    // Second call with object format - should use cached array and convert
+    const result = index.formatCurrency({
+      amount: 100,
+      code: "USD",
+      returnType: "object",
+    });
+    expect(result).to.eql({
+      formatted: "$100.00",
+      value: "100.00",
+      symbol: "$",
+    });
+  });
+
+  it("should return consistent results for same input", () => {
+    const arrayResult = index.formatCurrency({ amount: 500, code: "EUR" });
+    const objectResult = index.formatCurrency({
+      amount: 500,
+      code: "EUR",
+      returnType: "object",
+    });
+
+    expect(arrayResult[0]).to.eql(objectResult.formatted);
+    expect(arrayResult[1]).to.eql(objectResult.value);
+    expect(arrayResult[2]).to.eql(objectResult.symbol);
+  });
+});

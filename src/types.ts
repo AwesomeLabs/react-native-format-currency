@@ -18,7 +18,7 @@ export type CurrencyConfig = {
 };
 
 /**
- * Return type for formatCurrency function.
+ * Return type for formatCurrency function (array format).
  *
  * A tuple containing three strings:
  * - [0] Formatted amount with currency symbol (e.g., "$1,234.56")
@@ -32,6 +32,26 @@ export type CurrencyConfig = {
  * // symbol: "$"
  */
 export type FormatResult = [string, string, string];
+
+/**
+ * Return type for formatCurrency function (object format).
+ *
+ * An object containing the formatted currency values:
+ * - formatted: Formatted amount with currency symbol (e.g., "$1,234.56")
+ * - value: Formatted amount without symbol (e.g., "1,234.56")
+ * - symbol: Currency symbol only (e.g., "$")
+ *
+ * @example
+ * const result = formatCurrency({ amount: 1234.56, code: 'USD', returnType: 'object' });
+ * // result.formatted: "$1,234.56"
+ * // result.value: "1,234.56"
+ * // result.symbol: "$"
+ */
+export type FormatResultObject = {
+  formatted: string;
+  value: string;
+  symbol: string;
+};
 
 /**
  * Represents a supported currency with its code and display name.
