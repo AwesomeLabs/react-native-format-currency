@@ -102,9 +102,7 @@ export const formatCurrency = ({
   code,
 }: {
   amount: number;
-  // Keep autocompletion for known codes while allowing any custom/unknown string.
-  // (Avoids `CurrencyCode | string` which collapses to just `string`.)
-  code: CurrencyCode | (string & {});
+  code: CurrencyCode | string;
 }): FormatResult => {
   // Check cache first
   const cacheKey = getCacheKey(amount, code);
