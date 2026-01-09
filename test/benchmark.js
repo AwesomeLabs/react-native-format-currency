@@ -61,11 +61,11 @@ testCases.forEach(({ amount, code, description }) => {
     () => {
       formatCurrency({ amount: amount + counter++ * 0.001, code });
     },
-    ITERATIONS
+    ITERATIONS,
   );
   coldResults.push({ description, elapsed, opsPerSec });
   console.log(
-    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`
+    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`,
   );
 });
 
@@ -87,11 +87,11 @@ testCases.forEach(({ amount, code, description }) => {
     () => {
       formatCurrency({ amount, code });
     },
-    ITERATIONS
+    ITERATIONS,
   );
   warmResults.push({ description, elapsed, opsPerSec });
   console.log(
-    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`
+    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`,
   );
 });
 
@@ -119,11 +119,11 @@ const { elapsed: mixedElapsed, opsPerSec: mixedOps } = runBenchmark(
       cacheMisses++;
     }
   },
-  mixedIterations
+  mixedIterations,
 );
 
 console.log(
-  `  Mixed workload:        ${mixedElapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(mixedOps)).padStart(10)} ops/sec`
+  `  Mixed workload:        ${mixedElapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(mixedOps)).padStart(10)} ops/sec`,
 );
 console.log(`  Cache size: ${getFormatCacheSize()}`);
 console.log("");
@@ -146,10 +146,10 @@ largeNumberCases.forEach(({ amount, description }) => {
     () => {
       formatCurrency({ amount, code: "USD" });
     },
-    ITERATIONS
+    ITERATIONS,
   );
   console.log(
-    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`
+    `  ${description.padEnd(20)} ${elapsed.toFixed(2).padStart(8)}ms  ${formatNumber(Math.round(opsPerSec)).padStart(10)} ops/sec`,
   );
 });
 
@@ -167,10 +167,10 @@ const avgWarmOps =
 const speedup = avgWarmOps / avgColdOps;
 
 console.log(
-  `  Average cold cache:    ${formatNumber(Math.round(avgColdOps))} ops/sec`
+  `  Average cold cache:    ${formatNumber(Math.round(avgColdOps))} ops/sec`,
 );
 console.log(
-  `  Average warm cache:    ${formatNumber(Math.round(avgWarmOps))} ops/sec`
+  `  Average warm cache:    ${formatNumber(Math.round(avgWarmOps))} ops/sec`,
 );
 console.log(`  Cache speedup:         ${speedup.toFixed(1)}x faster`);
 console.log("");
@@ -181,12 +181,12 @@ const MIN_OPS_WARM = 2000000; // 2M ops/sec minimum
 
 if (avgColdOps < MIN_OPS_COLD) {
   console.error(
-    `WARNING: Cold cache performance (${formatNumber(Math.round(avgColdOps))} ops/sec) below threshold (${formatNumber(MIN_OPS_COLD)} ops/sec)`
+    `WARNING: Cold cache performance (${formatNumber(Math.round(avgColdOps))} ops/sec) below threshold (${formatNumber(MIN_OPS_COLD)} ops/sec)`,
   );
   process.exitCode = 1;
 } else if (avgWarmOps < MIN_OPS_WARM) {
   console.error(
-    `WARNING: Warm cache performance (${formatNumber(Math.round(avgWarmOps))} ops/sec) below threshold (${formatNumber(MIN_OPS_WARM)} ops/sec)`
+    `WARNING: Warm cache performance (${formatNumber(Math.round(avgWarmOps))} ops/sec) below threshold (${formatNumber(MIN_OPS_WARM)} ops/sec)`,
   );
   process.exitCode = 1;
 } else {

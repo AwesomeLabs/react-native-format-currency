@@ -8,12 +8,12 @@
     "build": "tsc -p tsconfig-build.json",
     "test": "mocha --reporter spec",
     "benchmark": "node test/benchmark.js",
-    "lint": "eslint . --ext .ts --ext .tsx",
-    "lint-fix": "eslint . --ext .ts --ext .tsx --fix"
+    "lint": "eslint \"src/**/*.{ts,tsx}\" \"example/**/*.{ts,tsx}\"",
+    "lint-fix": "yarn lint --fix"
   },
   "repository": "git+https://github.com/AwesomeLabs/react-native-format-currency.git",
   "author": "Awesome Labs (https://isjustawesome.com)",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "react-native",
     "react native",
