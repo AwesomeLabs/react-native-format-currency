@@ -1,12 +1,4 @@
-type FormatCurrencyFunction = ({
-  amount,
-  code,
-}: {
-  amount: number;
-  code: string;
-}) => [string, string, string];
-
-type CurrencyConfig = {
+export type CurrencyConfig = {
   name: string;
   symbol: string;
   format: "comma" | "period";
@@ -15,7 +7,7 @@ type CurrencyConfig = {
   decimals?: number;
 };
 
-const CURRENCIES: Record<string, CurrencyConfig> = {
+const CURRENCIES = {
   // united arab emirates dirham (ex: AED 1,234.56)
   AED: {
     name: "United Arab Emirates Dirham",
@@ -1272,7 +1264,7 @@ const CURRENCIES: Record<string, CurrencyConfig> = {
   // XDR - IMF Special Drawing Rights: NOT a tradeable currency
   // VEF - Venezuela Bolivar Fuerte: OBSOLETE, replaced by VES
   // ZWD - Zimbabwe Dollar (old): OBSOLETE, replaced by ZWL
-};
+} as const satisfies Record<string, CurrencyConfig>;
 
 const formatNumber = (
   num: number,
@@ -1297,15 +1289,24 @@ const formatNumber = (
   return `${formattedInt}${decimalSep}${decPart}`;
 };
 
-export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
-  const config = CURRENCIES[code];
+export type CurrencyCode = keyof typeof CURRENCIES;
+
+export const formatCurrency = ({
+  amount,
+  code,
+}: {
+  amount: number;
+  code: CurrencyCode | string;
+}): [string, string, string] => {
+  const config = CURRENCIES[code as CurrencyCode];
 
   if (!config) {
     const str = amount.toString();
     return [str, str, ""];
   }
 
-  const { symbol, format, position, space, decimals = 2 } = config;
+  const { symbol, format, position, space } = config;
+  const decimals = "decimals" in config ? (config.decimals ?? 2) : 2;
   const isNegative = amount < 0;
   const absAmount = Math.abs(amount);
 
@@ -1323,12 +1324,12 @@ export const formatCurrency: FormatCurrencyFunction = ({ amount, code }) => {
   return [formattedWithSign, formattedValueWithSign, symbol];
 };
 
-type CurrencyCode = {
+type SupportedCurrency = {
   code: string;
   name: string;
 };
 
-export const getSupportedCurrencies = (): CurrencyCode[] =>
+export const getSupportedCurrencies = (): SupportedCurrency[] =>
   Object.entries(CURRENCIES).map(([code, config]) => ({
     code,
     name: config.name,
