@@ -1,13 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   formatCurrency,
   getSupportedCurrencies,
@@ -27,11 +21,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingVertical: 8,
+    paddingHorizontal: 5,
+  },
+  currencyRowAlternate: {
+    backgroundColor: bgColorSecondary,
   },
   currencyRowText: {
     alignContent: "flex-start",
     color: fgColorPrimary,
     fontSize: 16,
+  },
+  currencyName: {
+    color: fgColorPrimary,
+    fontSize: 11,
+    fontWeight: "bold",
+    textAlign: "left",
   },
   input: {
     backgroundColor: bgColorSecondary,
@@ -45,8 +50,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 10,
   },
+  inputLabel: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 0,
+    marginTop: 0,
+    alignSelf: "center",
+  },
   scrollView: {
-    marginBottom: 40,
+    marginBottom: 0,
     marginTop: 40,
     paddingHorizontal: 5,
     width: "100%",
@@ -58,41 +70,58 @@ const App = () => {
 
   const currencyCodes = getSupportedCurrencies();
 
-  const renderItem = ({ item }) => {
-    const [valueFormattedWithSymbol, valueFormattedWithoutSymbol, symbol] =
-      formatCurrency({ amount: Number(inputValue), code: item.code });
+  const renderItem = ({ item, index }) => {
+    const [valueFormattedWithSymbol, valueFormatted] = formatCurrency({
+      amount: Number(inputValue),
+      code: item.code,
+    });
+
+    const isAlternate = index % 2 === 1;
 
     return (
-      <View style={styles.currencyRow}>
-        <Text style={styles.currencyRowText}>
-          {item.code} {symbol}
-        </Text>
-        <Text style={styles.currencyRowText}>{item.name}</Text>
-        <Text style={styles.currencyRowText}>{valueFormattedWithSymbol}</Text>
+      <View
+        style={[styles.currencyRow, isAlternate && styles.currencyRowAlternate]}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={styles.currencyName}>{item.name}</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.currencyRowText}>{item.code}</Text>
+            <Text style={styles.currencyRowText}>{valueFormatted}</Text>
+            <Text style={styles.currencyRowText}>
+              {valueFormattedWithSymbol}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          textAlign="center"
-          value={inputValue}
-          onChangeText={(value) => setInputValue(value)}
-          keyboardType="decimal-pad"
-        />
-      </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.inputLabel}>Enter value to format:</Text>
 
-      <FlatList
-        style={styles.scrollView}
-        data={currencyCodes}
-        renderItem={renderItem}
-        keyExtractor={(code) => code.code}
-      />
-      <StatusBar />
-    </SafeAreaView>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            textAlign="center"
+            value={inputValue}
+            onChangeText={(value) => setInputValue(value)}
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <FlatList
+          style={styles.scrollView}
+          data={currencyCodes}
+          renderItem={renderItem}
+          keyExtractor={(code) => code.code}
+        />
+        <StatusBar />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 export default App;
