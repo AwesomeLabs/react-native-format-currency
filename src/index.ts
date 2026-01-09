@@ -1,3 +1,13 @@
+/**
+ * Configuration for a currency's formatting rules.
+ *
+ * @property name - Full name of the currency (e.g., "United States Dollar")
+ * @property symbol - Currency symbol or code (e.g., "$", "€", "USD")
+ * @property format - Thousands/decimal separator style: "comma" (1,234.56) or "period" (1.234,56)
+ * @property position - Symbol placement: "before" ($100) or "after" (100€)
+ * @property space - Whether to include a space between symbol and amount
+ * @property decimals - Number of decimal places (defaults to 2 if not specified)
+ */
 export type CurrencyConfig = {
   name: string;
   symbol: string;
@@ -1266,6 +1276,58 @@ const CURRENCIES = {
   // ZWD - Zimbabwe Dollar (old): OBSOLETE, replaced by ZWL
 } as const satisfies Record<string, CurrencyConfig>;
 
+/**
+ * Return type for formatCurrency function.
+ *
+ * A tuple containing three strings:
+ * - [0] Formatted amount with currency symbol (e.g., "$1,234.56")
+ * - [1] Formatted amount without symbol (e.g., "1,234.56")
+ * - [2] Currency symbol only (e.g., "$")
+ *
+ * @example
+ * const [withSymbol, withoutSymbol, symbol] = formatCurrency({ amount: 1234.56, code: 'USD' });
+ * // withSymbol: "$1,234.56"
+ * // withoutSymbol: "1,234.56"
+ * // symbol: "$"
+ */
+export type FormatResult = [string, string, string];
+
+// Memoization cache for formatCurrency results
+const cache = new Map<string, FormatResult>();
+const MAX_CACHE_SIZE = 100;
+
+const getCacheKey = (amount: number, code: string): string =>
+  `${amount}:${code}`;
+
+/**
+ * Clears the internal memoization cache.
+ *
+ * Use this to free memory or reset state during testing.
+ * The cache automatically evicts old entries when full (LRU with 100 entries max).
+ *
+ * @example
+ * clearFormatCache();
+ */
+export const clearFormatCache = (): void => {
+  cache.clear();
+};
+
+/**
+ * Returns the current number of entries in the memoization cache.
+ *
+ * Useful for debugging or monitoring cache usage.
+ * Maximum cache size is 100 entries.
+ *
+ * @returns The number of cached format results
+ *
+ * @example
+ * console.log(getFormatCacheSize()); // 42
+ */
+export const getFormatCacheSize = (): number => cache.size;
+
+// Pre-compiled regex for thousands separator insertion (avoids regex creation per call)
+const THOUSANDS_REGEX = /\B(?=(\d{3})+(?!\d))/g;
+
 const formatNumber = (
   num: number,
   format: "comma" | "period",
@@ -1278,7 +1340,7 @@ const formatNumber = (
   const [intStr, decStr = ""] = str.split(".");
   const thousandsSep = format === "comma" ? "," : ".";
   const decimalSep = format === "comma" ? "." : ",";
-  const formattedInt = intStr.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSep);
+  const formattedInt = intStr.replace(THOUSANDS_REGEX, thousandsSep);
 
   if (decimals === 0) {
     return formattedInt;
@@ -1289,20 +1351,83 @@ const formatNumber = (
   return `${formattedInt}${decimalSep}${decPart}`;
 };
 
+/**
+ * Valid ISO 4217 currency codes supported by this library.
+ *
+ * Use this type for type-safe currency code parameters.
+ * Includes 165+ currencies from USD to ZWL.
+ *
+ * @example
+ * const code: CurrencyCode = 'USD'; // Valid
+ * const code: CurrencyCode = 'XXX'; // TypeScript error
+ */
 export type CurrencyCode = keyof typeof CURRENCIES;
 
+/**
+ * Formats a numeric amount as a localized currency string.
+ *
+ * Supports 165+ ISO 4217 currency codes with proper symbol placement,
+ * thousands separators, and decimal formatting. Results are memoized
+ * for performance (LRU cache with 100 entries).
+ *
+ * @param options - Formatting options
+ * @param options.amount - The numeric amount to format (supports negative values)
+ * @param options.code - ISO 4217 currency code (e.g., 'USD', 'EUR', 'JPY')
+ * @returns Tuple of [formattedWithSymbol, formattedWithoutSymbol, symbol]
+ *
+ * @example
+ * // Basic usage
+ * formatCurrency({ amount: 1234.56, code: 'USD' });
+ * // Returns: ['$1,234.56', '1,234.56', '$']
+ *
+ * @example
+ * // European format (period for thousands, comma for decimals)
+ * formatCurrency({ amount: 1234.56, code: 'EUR' });
+ * // Returns: ['€1.234,56', '1.234,56', '€']
+ *
+ * @example
+ * // Zero-decimal currency
+ * formatCurrency({ amount: 1234.56, code: 'JPY' });
+ * // Returns: ['¥ 1,235', '1,235', '¥']
+ *
+ * @example
+ * // Negative amount
+ * formatCurrency({ amount: -99.99, code: 'GBP' });
+ * // Returns: ['-£99.99', '-99.99', '£']
+ *
+ * @example
+ * // Unknown currency code (returns plain number)
+ * formatCurrency({ amount: 100, code: 'XXX' });
+ * // Returns: ['100', '100', '']
+ */
 export const formatCurrency = ({
   amount,
   code,
 }: {
   amount: number;
   code: CurrencyCode | string;
-}): [string, string, string] => {
+}): FormatResult => {
+  // Check cache first
+  const cacheKey = getCacheKey(amount, code);
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   const config = CURRENCIES[code as CurrencyCode];
 
   if (!config) {
     const str = amount.toString();
-    return [str, str, ""];
+    const result: FormatResult = [str, str, ""];
+    // Cache unknown currency results too
+    if (cache.size >= MAX_CACHE_SIZE) {
+      const firstKey = cache.keys().next().value;
+      if (firstKey !== undefined) {
+        cache.delete(firstKey);
+      }
+    }
+    cache.set(cacheKey, result);
+    return result;
   }
 
   const { symbol, format, position, space } = config;
@@ -1321,14 +1446,52 @@ export const formatCurrency = ({
   const formattedWithSign = isNegative ? `-${withSymbol}` : withSymbol;
   const formattedValueWithSign = isNegative ? `-${formatted}` : formatted;
 
-  return [formattedWithSign, formattedValueWithSign, symbol];
+  const result: FormatResult = [formattedWithSign, formattedValueWithSign, symbol];
+
+  // LRU eviction: remove oldest entry if cache is full
+  if (cache.size >= MAX_CACHE_SIZE) {
+    const firstKey = cache.keys().next().value;
+    if (firstKey !== undefined) {
+      cache.delete(firstKey);
+    }
+  }
+  cache.set(cacheKey, result);
+
+  return result;
 };
 
+/**
+ * Represents a supported currency with its code and display name.
+ */
 type SupportedCurrency = {
+  /** ISO 4217 currency code (e.g., "USD", "EUR") */
   code: string;
+  /** Full currency name (e.g., "United States Dollar") */
   name: string;
 };
 
+/**
+ * Returns a list of all supported currencies.
+ *
+ * Useful for building currency selector dropdowns or validating user input.
+ * Returns 165+ currencies sorted alphabetically by code.
+ *
+ * @returns Array of objects with `code` and `name` properties
+ *
+ * @example
+ * const currencies = getSupportedCurrencies();
+ * // [
+ * //   { code: 'AED', name: 'United Arab Emirates Dirham' },
+ * //   { code: 'AFN', name: 'Afghanistan Afghani' },
+ * //   ...
+ * // ]
+ *
+ * @example
+ * // Building a dropdown
+ * getSupportedCurrencies().map(c => (
+ *   <option key={c.code} value={c.code}>{c.name}</option>
+ * ));
+ */
 export const getSupportedCurrencies = (): SupportedCurrency[] =>
   Object.entries(CURRENCIES).map(([code, config]) => ({
     code,

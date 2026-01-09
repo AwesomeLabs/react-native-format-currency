@@ -1233,3 +1233,156 @@ describe("formatCurrency ISO 4217 decimal places", () => {
     expect(result).to.eql(["$1,234.56789", "1,234.56789", "$"]);
   });
 });
+
+describe("Additional edge cases", () => {
+  beforeEach(() => {
+    index.clearFormatCache();
+  });
+
+  it("should handle RTL currency symbols correctly", () => {
+    // Saudi Riyal (symbol after amount)
+    var result = index.formatCurrency({ amount: 1234.56, code: "SAR" });
+    expect(result).to.eql(["1,234.56 ﷼", "1,234.56", "﷼"]);
+
+    // UAE Dirham (symbol before amount)
+    result = index.formatCurrency({ amount: 1234.56, code: "AED" });
+    expect(result).to.eql(["AED 1,234.56", "1,234.56", "AED"]);
+
+    // Israeli Shekel
+    result = index.formatCurrency({ amount: 1234.56, code: "ILS" });
+    expect(result).to.eql(["₪ 1.234,56", "1.234,56", "₪"]);
+
+    // Bahrain Dinar (RTL with 3 decimals)
+    result = index.formatCurrency({ amount: 100, code: "BHD" });
+    expect(result).to.eql([".د.ب 100.000", "100.000", ".د.ب"]);
+  });
+
+  it("should handle extremely precise decimals", () => {
+    var result = index.formatCurrency({ amount: 0.000001, code: "USD" });
+    expect(result).to.eql(["$0.000001", "0.000001", "$"]);
+
+    result = index.formatCurrency({ amount: 0.123456789, code: "USD" });
+    expect(result).to.eql(["$0.123456789", "0.123456789", "$"]);
+
+    result = index.formatCurrency({ amount: 1.000000001, code: "EUR" });
+    expect(result).to.eql(["€1,000000001", "1,000000001", "€"]);
+  });
+
+  it("should handle unknown currency codes gracefully", () => {
+    var result = index.formatCurrency({ amount: 1234.56, code: "XXX" });
+    expect(result).to.eql(["1234.56", "1234.56", ""]);
+
+    result = index.formatCurrency({ amount: 1234.56, code: "INVALID" });
+    expect(result).to.eql(["1234.56", "1234.56", ""]);
+
+    result = index.formatCurrency({ amount: 1234.56, code: "" });
+    expect(result).to.eql(["1234.56", "1234.56", ""]);
+
+    result = index.formatCurrency({ amount: -99.99, code: "FAKE" });
+    expect(result).to.eql(["-99.99", "-99.99", ""]);
+  });
+
+  it("should handle very large numbers correctly", () => {
+    // Quadrillion
+    var result = index.formatCurrency({ amount: 1000000000000000, code: "USD" });
+    expect(result).to.eql(["$1,000,000,000,000,000.00", "1,000,000,000,000,000.00", "$"]);
+
+    // Large number with decimals
+    result = index.formatCurrency({ amount: 999999999999.99, code: "EUR" });
+    expect(result).to.eql(["€999.999.999.999,99", "999.999.999.999,99", "€"]);
+  });
+
+  it("should handle scientific notation edge cases", () => {
+    // Very small number that JS might represent in scientific notation
+    var result = index.formatCurrency({ amount: 1e-10, code: "USD" });
+    expect(result[0]).to.include("$");
+    expect(result[2]).to.eql("$");
+
+    // Large number
+    var result2 = index.formatCurrency({ amount: 1e15, code: "USD" });
+    expect(result2[0]).to.include("$");
+    expect(result2[0]).to.include(",");
+  });
+
+  it("should return consistent results for repeated calls (memoization)", () => {
+    var result1 = index.formatCurrency({ amount: 1234.56, code: "USD" });
+    var result2 = index.formatCurrency({ amount: 1234.56, code: "USD" });
+    var result3 = index.formatCurrency({ amount: 1234.56, code: "USD" });
+
+    expect(result1).to.eql(result2);
+    expect(result2).to.eql(result3);
+    expect(result1).to.eql(["$1,234.56", "1,234.56", "$"]);
+  });
+
+  it("should handle cache operations correctly", () => {
+    index.clearFormatCache();
+    expect(index.getFormatCacheSize()).to.eql(0);
+
+    index.formatCurrency({ amount: 100, code: "USD" });
+    expect(index.getFormatCacheSize()).to.eql(1);
+
+    index.formatCurrency({ amount: 200, code: "USD" });
+    expect(index.getFormatCacheSize()).to.eql(2);
+
+    // Same call should not increase cache size
+    index.formatCurrency({ amount: 100, code: "USD" });
+    expect(index.getFormatCacheSize()).to.eql(2);
+
+    index.clearFormatCache();
+    expect(index.getFormatCacheSize()).to.eql(0);
+  });
+
+  it("should evict old entries when cache is full", () => {
+    index.clearFormatCache();
+
+    // Fill cache beyond limit (100 entries)
+    for (var i = 0; i < 150; i++) {
+      index.formatCurrency({ amount: i, code: "USD" });
+    }
+
+    // Cache should be capped at 100
+    expect(index.getFormatCacheSize()).to.eql(100);
+  });
+});
+
+describe("getSupportedCurrencies", () => {
+  it("should return an array of currency objects", () => {
+    var currencies = index.getSupportedCurrencies();
+    expect(currencies).to.be.an("array");
+    expect(currencies.length).to.be.greaterThan(100);
+  });
+
+  it("should include common currencies", () => {
+    var currencies = index.getSupportedCurrencies();
+    var codes = currencies.map(function (c) {
+      return c.code;
+    });
+
+    expect(codes).to.include("USD");
+    expect(codes).to.include("EUR");
+    expect(codes).to.include("GBP");
+    expect(codes).to.include("JPY");
+  });
+
+  it("should have code and name properties", () => {
+    var currencies = index.getSupportedCurrencies();
+    var usd = currencies.find(function (c) {
+      return c.code === "USD";
+    });
+
+    expect(usd).to.have.property("code", "USD");
+    expect(usd).to.have.property("name", "United States Dollar");
+  });
+
+  it("should not include invalid/obsolete codes", () => {
+    var currencies = index.getSupportedCurrencies();
+    var codes = currencies.map(function (c) {
+      return c.code;
+    });
+
+    // These are explicitly excluded in the source
+    expect(codes).to.not.include("GGP"); // Guernsey - uses GBP
+    expect(codes).to.not.include("XDR"); // IMF Special Drawing Rights
+    expect(codes).to.not.include("VEF"); // Obsolete Venezuela Bolivar
+  });
+});
